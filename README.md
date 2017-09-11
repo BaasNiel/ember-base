@@ -1,50 +1,32 @@
-# ember-base
+# What is this?
+This is a basic ember app used (in my case) as the frontend that is connected to a rails api. This repo goes hand-in-hand with [this repo for the api](https://github.com/BaasNiel/rails-api-base). I use these repos to get an app up-and-running in a few minutes. You can copy the repos or follow the steps below to get up-and-running quickly.
 
-This README outlines the details of collaborating on this Ember application.
-A short introduction of this app could easily go here.
+# Steps
+1. `ember new app-name`
+2. Add .env support by running `ember install ember-cli-dotenv`.
+3. Add your `.env` file with `API_HOST=http://localhost:3000` in it.
+4. Add `.env` to your `.gitignore`
+5. Add the `apiHost` key to the `ENV` object in `config/environment.js`:
+    ```
+    var ENV = {
+        modulePrefix: 'app-name',
+        // other stuff
+        apiHost: process.env.API_HOST
+    };
+    ```
+5. Add `app/adaptors/application.js` file and add the following to it:
+    ```
+    import ENV from 'dota-picky/config/environment';
+    import DS from 'ember-data';
 
-## Prerequisites
+    export default DS.RESTAdapter.extend({
+      host: ENV.apiHost
+    });
+    ```
 
-You will need the following things properly installed on your computer.
+Your app is ready. You can now go set up a model, return it from a route, and it should call the corresponding model from your connected api.
 
-* [Git](https://git-scm.com/)
-* [Node.js](https://nodejs.org/) (with NPM)
-* [Ember CLI](https://ember-cli.com/)
-* [PhantomJS](http://phantomjs.org/)
-
-## Installation
-
-* `git clone <repository-url>` this repository
-* `cd ember-base`
-* `npm install`
-
-## Running / Development
-
-* `ember serve`
-* Visit your app at [http://localhost:4200](http://localhost:4200).
-
-### Code Generators
-
-Make use of the many generators for code, try `ember help generate` for more details
-
-### Running Tests
-
-* `ember test`
-* `ember test --server`
-
-### Building
-
-* `ember build` (development)
-* `ember build --environment production` (production)
-
-### Deploying
-
-Specify what it takes to deploy your app.
-
-## Further Reading / Useful Links
-
-* [ember.js](http://emberjs.com/)
-* [ember-cli](https://ember-cli.com/)
-* Development Browser Extensions
-  * [ember inspector for chrome](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi)
-  * [ember inspector for firefox](https://addons.mozilla.org/en-US/firefox/addon/ember-inspector/)
+# Useful Resources
+1. https://spin.atomicobject.com/2017/03/06/rails-ember-cli/
+2. https://wyeworks.com/blog/2015/6/30/how-to-build-a-rails-5-api-only-and-ember-application
+3. https://guides.emberjs.com/v2.15.0/getting-started/quick-start/
